@@ -13,11 +13,8 @@ buildscript {
 apply plugin: 'java-library'
 apply plugin: 'com.vanniktech.maven.publish'
 
-//Obviously, change the next line to match your project name.
-def projectName = 'libgdx-library-template'
+def projectName = 'vox-parser'
 
-//Change this to whatever Maven Central group you might publish to,
-//which is probably not this one if you aren't Tommy Ettinger.
 group 'com.github.tommyettinger'
 
 version "$VERSION_NAME" // You can set the version in gradle.properties .
@@ -39,23 +36,14 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 compileJava {
-	// Targeting Java 7 is the lowest version you could need to go at this point.
-	// libGDX itself targets a mix of Java 7 (for most backends) and 8 (for LWJGL3).
-    // You should change this to 8 if any libraries you use need Java 8 (some that
-    // come to mind are simple-graphs and jdkgdxds). Note that Java 20 (and almost
-    // certainly higher versions) cannot build with a release set to 7; set it to 8
-    // or higher if you expect anyone to build with Java 20 or higher.
-    sourceCompatibility = 7
-    targetCompatibility = 7
+    sourceCompatibility = 8
+    targetCompatibility = 8
     if (JavaVersion.current().isJava9Compatible()) {
-        options.release.set(7)
+        options.release.set(8)
     }
 }
 
 compileTestJava {
-	// LWJGL3 needs Java 8 starting in libGDX 1.11.0, which forces tests that use LWJGL3
-	// to use Java 8 or higher. Using options.release enforces compatibility with Java 8,
-	// including how NIO Buffers behave (which broke compatibility in Java 9).
     sourceCompatibility = 8
     targetCompatibility = 8
     if (JavaVersion.current().isJava9Compatible()) {
