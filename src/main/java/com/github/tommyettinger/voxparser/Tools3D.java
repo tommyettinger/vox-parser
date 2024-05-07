@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.ListIterator;
 
 /**
- * Just laying some foundation for 3D array manipulation.
- * Created by Tommy Ettinger on 11/2/2017.
+ * Miscellaneous code for working with 3D byte arrays. Includes some code that is used throughout
+ * the rest of the library.
  */
 public class Tools3D {
     public static byte[][][] deepCopy(byte[][][] voxels)
@@ -193,9 +193,19 @@ public class Tools3D {
         }
         return c;
     }
+
+    /**
+     * Runs a 3D cellular automaton on the given voxel grid in an attempt to "grind down" any
+     * oddly-shaped, small cruft that sticks out from the main model. Higher smoothLevel values
+     * make this run longer and smooth more aggressively. If smoothLevel is 0 or less, this returns
+     * {@code voxels} without changes.
+     * @param voxels a 3D byte array representing a palette index per byte
+     * @param smoothLevel if greater than 0, this will remove "cruft;" higher values are more aggressive
+     * @return if any changes were made, a copy of {@code voxels} that has been smoothed
+     */
     public static byte[][][] runCA(byte[][][] voxels, int smoothLevel)
     {
-        if(smoothLevel < 1)
+        if(voxels == null || smoothLevel < 1)
             return voxels;
         final int xs = voxels.length, ys = voxels[0].length, zs = voxels[0][0].length;
         //Dictionary<byte, int> colorCount = new Dictionary<byte, int>();

@@ -23,9 +23,15 @@ import java.util.Arrays;
  */
 public class VoxParser {
     /**
-     * If this is a general-purpose .vox loader, this should be true. For CG-specialized models, false.
+     * If true, voxels that touch empty space (the surface) will have their palette indices
+     * expanded into adjacent interior voxels (ones that do not touch empty space). This is useful when
+     * interior voxels are accidentally showing through the surface layer, and should be the same color as
+     * the surface. Imagine a happy, smiling voxel face, but when you rotate you can see the gore and viscera
+     * inside that face, before it returns to showing only the external skin -- when this is true, that
+     * won't happen. When this is false (the default), the models will be unchanged, so how they will look
+     * depends on how you render.
      */
-    public static final boolean GENERAL = true;
+    public static final boolean SOAK_SURFACE_INTO_MODEL = true;
     public static final int[] defaultPalette = {
             0x00000000, 0xffffffff, 0xffffccff, 0xffff99ff, 0xffff66ff, 0xffff33ff, 0xffff00ff, 0xffccffff,
             0xffccccff, 0xffcc99ff, 0xffcc66ff, 0xffcc33ff, 0xffcc00ff, 0xff99ffff, 0xff99ccff, 0xff9999ff,
@@ -205,7 +211,7 @@ public class VoxParser {
                             byte color = stream.readByte();
                             voxelData[x][y][z] = color;
                         }
-                        Tools3D.soakInPlace(voxelData);
+                        if(SOAK_SURFACE_INTO_MODEL) Tools3D.soakInPlace(voxelData);
                         model.grids.add(voxelData);
                         shp.minX = Math.min(shp.minX, 0);
                         shp.minY = Math.min(shp.minY, 0);
